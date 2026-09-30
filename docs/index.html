@@ -4,9 +4,81 @@
 <meta charset="utf-8" />
 <title>HydroGuard — Waterbody Encroachment Risk Map</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Satellite-derived waterbody encroachment risk map for the Chennai region, Tamil Nadu — GeoImpathon 1.0." />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<h1>HydroGuard</h1>
-<p>Waterbody encroachment risk dashboard — building now. Check back shortly.</p>
+<header>
+  <h1>Hydro<span>Guard</span></h1>
+  <div class="stepper" id="stepper">
+    <div class="step" data-stage="0">1. Satellite Data</div>
+    <div class="step" data-stage="1">2. Image Processing</div>
+    <div class="step" data-stage="2">3. Geospatial Analysis</div>
+    <div class="step" data-stage="3">4. Indicator / Model</div>
+    <div class="step" data-stage="4">5. Interactive Map</div>
+    <div class="step" data-stage="5">6. Decision / Recommendation</div>
+  </div>
+  <button id="demoBtn">▶ Demo Mode</button>
+</header>
+<div id="demoCaption"></div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <h2 class="section-title">Key Numbers</h2>
+    <div class="kpis" id="kpis"></div>
+
+    <h2 class="section-title">Layers</h2>
+    <label class="layer-toggle"><input type="checkbox" id="lyr-baseline" checked><span class="swatch" style="background:#38bdf8"></span>Baseline water (2019-20)</label>
+    <label class="layer-toggle"><input type="checkbox" id="lyr-recent"><span class="swatch" style="background:#0ea5e9"></span>Recent water</label>
+    <label class="layer-toggle"><input type="checkbox" id="lyr-lost"><span class="swatch" style="background:#ef4444"></span>Water lost</label>
+    <label class="layer-toggle"><input type="checkbox" id="lyr-builtup"><span class="swatch" style="background:#f97316"></span>New built-up</label>
+    <label class="layer-toggle"><input type="checkbox" id="lyr-lakes" checked><span class="swatch" style="background:#a78bfa"></span>Lakes by risk class</label>
+
+    <div class="swipe-control">
+      <label>Before / After swipe (baseline ↔ recent water)</label>
+      <input type="range" id="swipeSlider" min="0" max="100" value="50">
+    </div>
+
+    <h2 class="section-title">Featured Lakes</h2>
+    <div id="featured"></div>
+
+    <h2 class="section-title">Top 10 by Risk (&gt;=10ha)</h2>
+    <table class="top10" id="top10"><thead><tr><th>Lake</th><th>Lost%</th><th>Risk</th></tr></thead><tbody></tbody></table>
+
+    <h2 class="section-title">Area Lost by Lake</h2>
+    <canvas id="lossChart"></canvas>
+
+    <h2 class="section-title">Legend</h2>
+    <div id="legend">
+      <div class="row"><span class="swatch" style="background:#22c55e"></span>Low risk (&lt;25)</div>
+      <div class="row"><span class="swatch" style="background:#eab308"></span>Moderate (25-50)</div>
+      <div class="row"><span class="swatch" style="background:#f97316"></span>High (50-75)</div>
+      <div class="row"><span class="swatch" style="background:#ef4444"></span>Critical (&gt;75)</div>
+    </div>
+
+    <h2 class="section-title">Method &amp; Limitations</h2>
+    <div class="method-panel">
+      <ul>
+        <li>10 m Sentinel-2 resolution; ponds under the minimum lake-size cutoff are excluded from the inventory.</li>
+        <li>Baseline (Nov 2019-Mar 2020) vs. recent post-monsoon season, matched to reduce seasonal bias — see CHIRPS rainfall ratio KPI.</li>
+        <li>Water = MNDWI&gt;0 in ≥30% of cloud-free observations; built-up from Dynamic World, thresholded at 0.5.</li>
+        <li>No ground-truth field survey; encroachment vs. drying/siltation is inferred from co-located built-up growth only.</li>
+      </ul>
+    </div>
+  </aside>
+
+  <main id="map"></main>
+
+  <aside class="detail-panel" id="detailPanel">
+    <h2 class="section-title">Lake Detail</h2>
+    <div class="detail-empty" id="detailEmpty">Click a lake on the map or in the Top 10 list to see its stats and recommendation.</div>
+    <div id="detailBody" style="display:none"></div>
+  </aside>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

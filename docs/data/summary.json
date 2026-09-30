@@ -1,0 +1,16 @@
+{
+  "baseline_ha": 23933.0,
+  "recent_ha": 25246.1,
+  "lost_ha": 3999.9,
+  "gained_ha": 5313.0,
+  "encroached_ha": 8.3,
+  "drying_ha": 3991.6,
+  "pct_loss": 16.7,
+  "jrc_agreement_pct": 27.5,
+  "chirps_ratio": 1.094741335773646,
+  "baseline_window": "2019-11-01 to 2020-03-31",
+  "recent_window": "2025-11-01 to 2026-03-31",
+  "lake_count": 730,
+  "min_lake_ha": 2.0,
+  "built_fraction_pct": 21.5
+}
