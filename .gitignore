@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.ee-credentials
+*.egg-info/
+.DS_Store
+.vscode/
+*.log
